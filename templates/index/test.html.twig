@@ -1,0 +1,43 @@
+{# @var badge App\Entity\Badge #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Badge</th>
+                <th>profil</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>{{ badge.nom }}</th>
+                <td>{{ badge.prenom }}</td>
+                <td>{{ badge.code1 }}</td>
+                <td>
+                    <table>
+                    {% for profil in badge.profil %}
+                        <tr>
+                            <td>{{profil.nom}}</td>
+                            <td>
+                                <table>
+                                    {{ dump(profil.profilGlecteurVariable) }}
+
+                                </table>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                    </table>
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}

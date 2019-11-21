@@ -1,0 +1,7 @@
+TABLE=Utilisateur
+Numero;Nom;Prenom;Pseudo;MotDePasse;Info;Profil;Badge;EMail;Langue;ProgHoraire;Telephone;Telephone2;Fax;Extension
+1;admin;(Null);ADM;123;(Null);1;(Null);(Null);(Null);(Null);(Null);(Null);(Null);(Null)
+2;NOEL;Gérard;NGN;ngnmatel0;(Null);2;0;(Null);(Null);0;(Null);(Null);(Null);(Null)
+3;Lambert-Martinez;Daniéle-Evelyne;SECRCRIT;sebastien;(Null);2;0;(Null);(Null);0;(Null);(Null);(Null);(Null)
+4;CHAULET;(Null);CHAULET;maxime;(Null);1;0;(Null);(Null);0;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<UserExtension xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">\n  <Locked>false</Locked>\n  <DateBeginValid>2000-01-01T00:00:00</DateBeginValid>\n  <DateEndValid>3000-01-01T00:00:00</DateEndValid>\n  <DateLastPasswordUpdate>2013-02-15T09:56:28.9145059+01:00</DateLastPasswordUpdate>\n  <FilterHostname />\n</UserExtension>"
+6;NADRI;MOURAD;NADRI;kneda42800;(Null);1;0;(Null);(Null);0;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<UserExtension xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">\n  <Locked>false</Locked>\n  <DateBeginValid>2000-01-01T00:00:00</DateBeginValid>\n  <DateEndValid>3000-01-01T00:00:00</DateEndValid>\n  <DateLastPasswordUpdate>2018-09-19T16:21:32.664845+02:00</DateLastPasswordUpdate>\n  <FilterHostname />\n</UserExtension>"
