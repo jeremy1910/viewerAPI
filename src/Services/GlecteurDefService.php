@@ -45,11 +45,13 @@ class GlecteurDefService extends ParserService
 
             $glecteur = key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null ;
             $variable = key_exists($record['Variable'], self::$variables) ? self::$variables[$record['Variable']] : null ;
-
-           $glecteur->addVariable($variable);
+            if($glecteur && $variable){
+                $glecteur->addVariable($variable);
+            }
         }
 
         $this->entityManager->flush();
+
 
     }
 }

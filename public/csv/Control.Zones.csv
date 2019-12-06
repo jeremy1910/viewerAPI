@@ -1,3 +1,0 @@
-TABLE=Zones
-Numero;Nom;Description;GLecteurEntree;GLecteurSortie;AntiRetourEntree;AntiRetourSortie;Extension
-1;test;Nouvelle zone;1;6;False;False;(Null)

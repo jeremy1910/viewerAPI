@@ -42,6 +42,8 @@ class ParserService
         $this->installation = $installation;
         $this->reader = Reader::createFromPath($this->parameterBag->get('BaseInstallationPath').$this->parameterBag->get($toParse), 'r');
         $this->reader->setDelimiter(';');
+        $this->reader->setOutputBOM(Reader::BOM_UTF8);
+        $this->reader->addStreamFilter('convert.iconv.ISO-8859-15/UTF-8');
         $this->reader->setHeaderOffset($this->parameterBag->get('default_header_offset'));
 
         $this->stmt = (new Statement())

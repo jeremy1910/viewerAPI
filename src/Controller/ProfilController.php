@@ -66,14 +66,16 @@ class ProfilController extends AbstractController
             $normalizedData['maxCount'] = $result['countMax'];
 
             $this->decodePH($normalizedData);
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
         catch (\Exception $e)
         {
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
 
     }
 
@@ -92,12 +94,16 @@ class ProfilController extends AbstractController
             $normalizedData['maxCount'] = 1;
             $this->decodePH($normalizedData);
 
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-        }catch (\Exception $e){
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        catch (\Exception $e)
+        {
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
+        }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
 
     }
 
@@ -129,12 +135,16 @@ class ProfilController extends AbstractController
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['profil']]);
             $normalizedData['maxCount'] = $result['countMax'];
             $this->decodePH($normalizedData);
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-        }catch (\Exception $e){
-            $jsonObject = $e->getMessage();
-            return new JsonResponse($jsonObject, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        catch (\Exception $e)
+        {
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
+        }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
     }
 
     private function decodePH(array & $normalizedData){

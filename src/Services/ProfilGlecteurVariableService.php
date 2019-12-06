@@ -33,13 +33,14 @@ class ProfilGlecteurVariableService extends ParserService
     private $glecteurRepository;
 
     private $variableRepository;
-
+    // Un bug par la !
     public function makeAssociation(){
 
         $records = $this->stmt->process($this->reader);
 
         foreach ($records as $offset => $record) {
             $profilGlecteurVariable = new ProfilGlecteurVariable();
+            $annomalie = false;
 //
 //            $profilGlecteurVariable->setProfil($this->profilRepository->findOneBy(['appID' => (int) $record['Profil']]));
 //            $profilGlecteurVariable->setGlecteur($this->glecteurRepository->findOneBy(['appID' => (int)$record['GLecteur']]));
@@ -49,12 +50,13 @@ class ProfilGlecteurVariableService extends ParserService
             $profilGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
             $profilGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
 
-
-            $this->entityManager->persist($profilGlecteurVariable);
-
+            if($profilGlecteurVariable->getGlecteur() && $profilGlecteurVariable->getVariable() && $profilGlecteurVariable->getProfil()){
+                $this->entityManager->persist($profilGlecteurVariable);
+            }
         }
-
         $this->entityManager->flush();
+
+
 
     }
 

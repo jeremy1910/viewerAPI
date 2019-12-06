@@ -68,5 +68,6 @@ class VariableService extends ParserService
 
         $this->entityManager->flush();
 
+
     }
 }

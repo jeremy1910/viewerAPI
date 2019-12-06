@@ -122,7 +122,6 @@ class Installation
 
 
         } catch (\Exception $e) {
-
             $this->entityManager->remove($this->installation);
             $this->entityManager->flush();
             throw new \Exception($e->getMessage());
@@ -186,7 +185,7 @@ class Installation
 
     }
 
-    private function removeInstallation(){
+    public function removeInstallation(){
 
         $glecteurs = $this->glecteurRepository->findBy(['installation' => $this->installation->getId()]);
         $variables = $this->variableRepository->findBy(['installation' => $this->installation->getId()]);
@@ -205,6 +204,7 @@ class Installation
         foreach ($profils as $profil){
             $this->entityManager->remove($profil);
         }
+        $this->entityManager->remove($this->installation);
 
         $this->entityManager->flush();
 
@@ -249,7 +249,7 @@ class Installation
         foreach ($requiredFiles as $file){
             if(!$this->filesystem->exists($this->parameterBag->get('BaseInstallationPath').$file))
             {
-                throw new  \Exception("Installation not valide file : ".$file." not found in ".$this->parameterBag->get('BaseInstallationPath'));
+                throw new  \Exception("Fichier .zip non valide, le fichier : ".$file." introuvable");
             }
         }
         return true;

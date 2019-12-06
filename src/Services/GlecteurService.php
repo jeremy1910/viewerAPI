@@ -47,6 +47,7 @@ class GlecteurService extends ParserService
 
         $this->entityManager->flush();
 
+
     }
 
 }

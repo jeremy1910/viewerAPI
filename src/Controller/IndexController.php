@@ -57,12 +57,12 @@ class IndexController extends AbstractController
      * @Route("/addInstallation", name="addInstallation", methods={"POST"})
      */
     public function addInstallation(Installation $installation, Request $request){
-
+        set_time_limit(0);
         try{
             $installation->init()->addInstallation($request);
             $message = $this->encoder->encode(["success" => true, "message" => "Installation réussite"], 'json');
         }catch (\Exception $e){
-            $message = $this->encoder->encode(["success" => false, "message" => "Installation déja existante"], 'json');
+            $message = $this->encoder->encode(["success" => false, "message" => $e->getMessage()], 'json');
         }
 
 
@@ -70,7 +70,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     * @Route("/openInstallation/{id}", name="openInstallation")
+     * @Route("/openInstallation/{id}", name="openInstallation", methods={"GET"})
      */
     public function openInstallation(\App\Entity\Installation $installation, Installation $installationHandler){
 
@@ -79,11 +79,14 @@ class IndexController extends AbstractController
                 throw new \Exception("l'installation demandé est introuvable");
             }
             $installationHandler->init()->openInstallation($installation);
-            return new JsonResponse(["success" => true, "message" => "installation chargé"], Response::HTTP_OK);
+            $message = $this->encoder->encode(["success" => false, "message" => "installation chargé"], 'json');
 
         }catch (\Exception $e){
-            return new JsonResponse(["success" => false, "message" => $e->getMessage()], 500);
+            $message = $this->encoder->encode(["success" => false, "message" => $e->getMessage()], 'json');
+
         }
+
+        return new JsonResponse($message, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
     }
 
     /**
@@ -92,17 +95,42 @@ class IndexController extends AbstractController
      * @return JsonResponse
      */
     public function updateInstallation(\App\Entity\Installation $installation, Installation $installationHandler, Request $request){
+        set_time_limit(0);
         try{
             if(!$installation){
                 throw new \Exception("l'installation demandé est introuvable");
             }
             $installationHandler->init($installation)->updateInstallation($request);
-            return new JsonResponse(["success" => true, "message" => "installation mise à jour"], Response::HTTP_OK);
+            $message = $this->encoder->encode(["success" => true, "message" => "installation mise à jour"], 'json');
+
 
         }catch (\Exception $e){
-            return new JsonResponse(["success" => false, "message" => $e->getMessage()], 500);
+            $message = $this->encoder->encode(["success" => false, "message" => $e->getMessage()], 'json');
+
         }
+        return new JsonResponse($message, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
     }
 
+    /**
+     * @param \App\Entity\Installation $installation
+     * @param Installation $installationHandler
+     * @Route("/removeInstallation/{id}", name="removeInstallation")
+     * @return JsonResponse
+     */
+    public function removeInstallation(\App\Entity\Installation $installation, Installation $installationHandler){
+        set_time_limit(0);
+        try{
+            if(!$installation){
+                throw new \Exception("l'installation demandé est introuvable");
+            }
+            $installationHandler->init($installation)->removeInstallation();
+            $message = $this->encoder->encode(["success" => true, "message" => "installation supprimé"], 'json');
+
+        }catch (\Exception $e){
+            $message = $this->encoder->encode(["success" => false, "message" => $e->getMessage()], 'json');
+        }
+        return new JsonResponse($message, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
+    }
 
 }

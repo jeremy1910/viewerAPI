@@ -59,14 +59,17 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByInstallation($installation, $limit, $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
         catch (\Exception $e)
         {
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
 
     }
 
@@ -82,12 +85,17 @@ class BadgeController extends AbstractController
             $normalizedData['result'][] = $this->normalizer->normalize($badge, null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = 1;
 
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-        }catch (\Exception $e){
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        catch (\Exception $e)
+        {
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
+        }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
 
     }
 
@@ -120,12 +128,17 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByNom($nom, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-        }catch (\Exception $e){
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        catch (\Exception $e)
+        {
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
+        }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
     }
 
 
@@ -158,12 +171,17 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByCode1($code1, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-        }catch (\Exception $e){
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        catch (\Exception $e)
+        {
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
+        }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
     }
 
     /**
@@ -193,12 +211,17 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByCode1($prenom, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
-            $json = $this->encoder->encode($normalizedData, 'json');
-            return new JsonResponse($json, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-        }catch (\Exception $e){
-            $error = $e->getMessage();
-            return new JsonResponse($error, Response::HTTP_BAD_REQUEST, ['Access-Control-Allow-Origin' => '*'], false);
+            $normalizedData['success'] = true;
+            $response = $this->encoder->encode($normalizedData, 'json');
         }
+        catch (\Exception $e)
+        {
+            $normalizedData['result'] = $e->getMessage();
+            $normalizedData['success'] = false;
+            $response = $this->encoder->encode($normalizedData, 'json');
+        }
+        return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
     }
 }
 
