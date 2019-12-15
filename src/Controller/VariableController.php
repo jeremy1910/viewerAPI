@@ -14,22 +14,24 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
 
 class VariableController extends AbstractController
 {
-    public function __construct(VariableRepository $variableRepository, FirstMaxResult $firstMaxResult, NormalizerInterface $normalizer, EncoderInterface $encoder)
+    public function __construct(VariableRepository $variableRepository, FirstMaxResult $firstMaxResult, NormalizerInterface $normalizer, EncoderInterface $encoder,  DecoderInterface $decoder)
     {
         $this->variableRepository = $variableRepository;
         $this->firstMaxResult = $firstMaxResult;
         $this->normalizer = $normalizer;
         $this->encoder = $encoder;
+		$this->decoder = $decoder;
     }
 
     private $normalizer;
     private $encoder;
     private $variableRepository;
     private $firstMaxResult;
+    private $decoder;
 
 
     /**
@@ -52,6 +54,7 @@ class VariableController extends AbstractController
             $result = $this->variableRepository->findByInstallation($installation, $limit, $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['variable']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
 
@@ -75,7 +78,7 @@ class VariableController extends AbstractController
         try {
             $normalizedData['result'][] = $this->normalizer->normalize($variable, null, ['groups' => ['variable']]);
             $normalizedData['maxCount'] = 1;
-
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -118,6 +121,7 @@ class VariableController extends AbstractController
             $result = $this->variableRepository->findByNom($nom, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['variable']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -160,6 +164,7 @@ class VariableController extends AbstractController
             $result = $this->variableRepository->findByDescription($description, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['variable']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -172,5 +177,12 @@ class VariableController extends AbstractController
         return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
     }
 
-    
+	private function decodePH(array & $normalizedData){
+		foreach ($normalizedData['result'] as $key => $variable){
+				if($variable["extension"]){
+					$normalizedData['result'][$key]["extension"] = $this->decoder->decode( $variable["extension"], 'json');
+				}
+
+		}
+	}
 }

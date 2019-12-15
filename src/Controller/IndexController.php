@@ -52,6 +52,14 @@ class IndexController extends AbstractController
         ]);
     }
 
+    /**
+     * @return Response
+     * @Route("/test", name="test")
+     */
+    public function test(){
+        return $this->render('index/index.html.twig');
+    }
+
 
     /**
      * @Route("/addInstallation", name="addInstallation", methods={"POST"})

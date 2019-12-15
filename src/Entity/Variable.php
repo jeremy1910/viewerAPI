@@ -47,7 +47,7 @@ class Variable
 
     /**
      * @ORM\Column(type="string", length=1000,  nullable=true)
-     * @Groups({"profil"})
+     * @Groups({"profil", "variable"})
      */
     private $extension;
 

@@ -42,7 +42,7 @@ class VariableService extends ParserService
             $variable->setDescription(strstr($record['Description'], '(Null)') ? null : $record['Description']);
 
 
-            if($record['Extension'] !== '(Null)' AND preg_match('/^PH.PH[0-9]+$/', $record['Nom']))
+            if($record['Extension'] !== '(Null)' AND (preg_match('/^PH.PH[0-9]+$/', $record['Nom']) OR preg_match('/^PH.PF[0-9]+$/', $record['Nom'])))
             {
 
                 $xml = preg_replace('/(<\?xml[^?]+?)utf-16/i', '$1utf-8', $record['Extension']);
