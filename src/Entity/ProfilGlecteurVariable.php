@@ -24,21 +24,21 @@ class ProfilGlecteurVariable
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Profil", inversedBy="profilGlecteurVariable")
+     * @ORM\ManyToOne(targetEntity="Profil", inversedBy="profilGlecteurVariable", cascade={"remove"})
      * @ORM\JoinColumn(name="profil_id", referencedColumnName="id", nullable=false)
      * @Groups({"glecteur"})
      */
     private $profil;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Glecteur", inversedBy="profilGlecteurVariable")
+     * @ORM\ManyToOne(targetEntity="Glecteur", inversedBy="profilGlecteurVariable", cascade={"remove"})
      * @ORM\JoinColumn(name="glecteur_id", referencedColumnName="id", nullable=false)
      * @Groups({"profil", "variable"})
      */
     private $glecteur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Variable", inversedBy="profilGlecteurVariable")
+     * @ORM\ManyToOne(targetEntity="Variable", inversedBy="profilGlecteurVariable", cascade={"remove"})
      * @ORM\JoinColumn(name="variable_id", referencedColumnName="id", nullable=false)
      * @Groups({"profil"})
      */

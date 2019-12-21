@@ -29,11 +29,9 @@ class ProfilGlecteurVariableService extends ParserService
     }
 
     private $profilRepository;
-
     private $glecteurRepository;
-
     private $variableRepository;
-    // Un bug par la !
+
     public function makeAssociation(){
 
         $records = $this->stmt->process($this->reader);

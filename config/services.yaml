@@ -15,7 +15,7 @@ parameters:
     ProfilAcces: 'Control.ProfilAcces.csv'
     Badge: 'Control.Badge.csv'
     BadgeProfil: 'Control.BadgeProfil.csv'
-
+    BadgeAcces: 'Control.BadgeAcces.csv'
     DefaultStartResult: 0
     DefaultMaxResult: 25
 

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jeje
- * Date: 17/10/19
- * Time: 23:48
- */
 
 namespace App\Controller;
 
@@ -18,26 +12,31 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
+
 class BadgeController extends AbstractController
 {
-    public function __construct(BadgeRepository $badgeRepository, FirstMaxResult $firstMaxResult,   NormalizerInterface $normalizer, EncoderInterface $encoder)
+
+
+	public function __construct(BadgeRepository $badgeRepository, FirstMaxResult $firstMaxResult, NormalizerInterface $normalizer, EncoderInterface $encoder, DecoderInterface $decoder)
     {
 
         $this->badgeRepository = $badgeRepository;
         $this->firstMaxResult = $firstMaxResult;
         $this->normalizer = $normalizer;
         $this->encoder = $encoder;
+		$this->decoder = $decoder;
     }
 
     private $normalizer;
     private $encoder;
     private $badgeRepository;
     private $firstMaxResult;
-
+	private $decoder;
 
     /**
      * Retour l'esemble des badges
@@ -59,6 +58,7 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByInstallation($installation, $limit, $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -84,7 +84,7 @@ class BadgeController extends AbstractController
         try {
             $normalizedData['result'][] = $this->normalizer->normalize($badge, null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = 1;
-
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -128,6 +128,7 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByNom($nom, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -171,6 +172,7 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByCode1($code1, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -211,6 +213,7 @@ class BadgeController extends AbstractController
             $result = $this->badgeRepository->findByCode1($prenom, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
             $normalizedData['success'] = true;
             $response = $this->encoder->encode($normalizedData, 'json');
         }
@@ -223,5 +226,51 @@ class BadgeController extends AbstractController
         return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
 
     }
+
+	/**
+	 * @param Installation $installation
+	 * @param Request $request
+	 * @return JsonResponse
+	 * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+	 * @Route("/api/{installation}/badgeGlecteurVariable", name="badgesGlecteurVariable", methods={"GET"})
+	 */
+	public function badges_search_individual_right(Installation $installation, Request $request){
+
+		$start = $request->query->get('start');
+		$limit = $request->query->get('limit');
+
+		$this->firstMaxResult->setFirstMaxresult($start, $limit);
+		try {
+			$result = $this->badgeRepository->findIndividualRight($installation,(int) $limit, (int) $start);
+			$normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
+			$normalizedData['maxCount'] = $result['countMax'];
+			$this->decodePH($normalizedData);
+			$normalizedData['success'] = true;
+			$response = $this->encoder->encode($normalizedData, 'json');
+		}
+		catch (\Exception $e)
+		{
+			$normalizedData['result'] = $e->getMessage();
+			$normalizedData['success'] = false;
+			$response = $this->encoder->encode($normalizedData, 'json');
+		}
+		return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+
+	}
+
+	/**
+	 * @param array $normalizedData
+	 */
+	private function decodePH(array & $normalizedData)
+	{
+		foreach ($normalizedData['result'] as $key => $result){
+			foreach ($result["badgeGlecteurVariable"] as $key2 =>$result2)
+			{
+
+				$normalizedData['result'][$key]["badgeGlecteurVariable"][$key2]['variable']["extension"] = $this->decoder->decode( $result2["variable"]["extension"], 'json');
+
+			}
+		}
+	}
 }
 

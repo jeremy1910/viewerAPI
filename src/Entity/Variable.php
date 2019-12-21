@@ -16,20 +16,20 @@ class Variable
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue()
-     * @Groups({"glecteur", "profil", "variable"})
+     * @Groups({"glecteur", "profil", "variable", "badge", "badgeGlecteurVariable"})
      */
     private $id;
 
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"glecteur", "profil", "variable"})
+     * @Groups({"glecteur", "profil", "variable", "badge", "badgeGlecteurVariable"})
      */
     private $Nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"glecteur", "profil", "variable"})
+     * @Groups({"glecteur", "profil", "variable", "badge", "badgeGlecteurVariable"})
      */
     private $description;
 
@@ -40,14 +40,14 @@ class Variable
     private $glecteurs;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="variable")
+     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="variable", cascade={"remove"})
      * @Groups({"variable"})
      */
     private $profilGlecteurVariable;
 
     /**
      * @ORM\Column(type="string", length=1000,  nullable=true)
-     * @Groups({"profil", "variable"})
+     * @Groups({"profil", "variable", "badge", "badgeGlecteurVariable"})
      */
     private $extension;
 
@@ -67,11 +67,16 @@ class Variable
      */
     private $appID;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="\App\Entity\BadgeGlecteurVariable", mappedBy="badge")
+	 */
+	private $badgeGlecteurVariable;
 
     public function __construct()
     {
         $this->glecteurs = new ArrayCollection();
         $this->profilGlecteurVariable = new ArrayCollection();
+		$this->badgeGlecteurVariable = new ArrayCollection();
     }
 
     /**
@@ -237,5 +242,37 @@ class Variable
         return $this;
     }
 
+	/**
+	 * @return mixed
+	 */
+	public function getBadgeGlecteurVariable()
+	{
+		return $this->badgeGlecteurVariable;
+	}
 
+	/**
+	 * @param mixed $badgeGlecteurVariable
+	 * @return Variable
+	 */
+	public function setBadgeGlecteurVariable($badgeGlecteurVariable)
+	{
+		$this->badgeGlecteurVariable = $badgeGlecteurVariable;
+		return $this;
+	}
+
+
+
+	public function addBadgeGlecteurVariable(BadgeGlecteurVariable $badgeGlecteurVariable){
+		if (!$this->badgeGlecteurVariable->contains($badgeGlecteurVariable))
+		{
+			$this->badgeGlecteurVariable->add($badgeGlecteurVariable);
+		}
+	}
+
+	public function removeBadgeGlecteurVariable(BadgeGlecteurVariable $badgeGlecteurVariable){
+		if ($this->badgeGlecteurVariable->contains($badgeGlecteurVariable))
+		{
+			$this->badgeGlecteurVariable->remove($badgeGlecteurVariable);
+		}
+	}
 }

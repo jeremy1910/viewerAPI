@@ -9,12 +9,13 @@
 namespace App\Services;
 
 
+use App\Entity\BadgeGlecteurVariable;
 use Doctrine\ORM\EntityManagerInterface;
 
 class HandelParserService
 {
 
-    public function __construct(GlecteurService $glecteurService, VariableService $variableService, GlecteurDefService $glecteurDefService, ProfilService $profilService, ProfilGlecteurVariableService $profilGlecteurVariableService, EntityManagerInterface $entityManager, BadgeService $badgeService, BadgeProfilService $badgeProfilService)
+    public function __construct(GlecteurService $glecteurService, VariableService $variableService, GlecteurDefService $glecteurDefService, ProfilService $profilService, ProfilGlecteurVariableService $profilGlecteurVariableService, EntityManagerInterface $entityManager, BadgeService $badgeService, BadgeProfilService $badgeProfilService, BadgeGlecteurVariableService $badgeGlecteurVariableService)
     {
         $this->glecteurService = $glecteurService;
         $this->variableService = $variableService;
@@ -24,7 +25,7 @@ class HandelParserService
         $this->entityManager = $entityManager;
         $this->badgeService = $badgeService;
         $this->badgeProfilService = $badgeProfilService;
-
+        $this->badgeGlecteurVariableService = $badgeGlecteurVariableService;
     }
 
     private $entityManager;
@@ -35,6 +36,7 @@ class HandelParserService
     private $profilGlecteurVariableService;
     private $badgeService;
     private $badgeProfilService;
+    private $badgeGlecteurVariableService;
 
     public function parseFiles(\App\Entity\Installation $installation){
 
@@ -47,7 +49,7 @@ class HandelParserService
         $this->profilGlecteurVariableService->init('ProfilAcces', $installation)->makeAssociation();
         $this->badgeService->init('Badge', $installation)->makeAssociation();
         $this->badgeProfilService->init('BadgeProfil', $installation)->makeAssociation();
-
+		$this->badgeGlecteurVariableService->init('BadgeAcces', $installation)->makeAssociation();
     }
 
     private function trucateTables(){

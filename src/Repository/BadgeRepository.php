@@ -81,34 +81,19 @@ class BadgeRepository extends ServiceEntityRepository
         return ['result' => $result, 'countMax' => $c];
     }
 
+	public function findIndividualRight(Installation $installation, int $limit, int $start)
+	{
 
+		$query = $this->createQueryBuilder('b')
+			->innerJoin('b.badgeGlecteurVariable', 'ir')
+			->where('b.installation = :installation')
+			->setParameter('installation', $installation)
+			->setFirstResult($start)
+			->setMaxResults($limit);
+		$result = $query->getQuery()->getResult();
 
-    // /**
-    //  * @return Badge[] Returns an array of Badge objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+		$c = count(new Paginator($query, $fetchJoinCollection = true));
 
-    /*
-    public function findOneBySomeField($value): ?Badge
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+		return ['result' => $result, 'countMax' => $c];
+	}
 }

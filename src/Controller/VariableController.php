@@ -33,7 +33,6 @@ class VariableController extends AbstractController
     private $firstMaxResult;
     private $decoder;
 
-
     /**
      * Retour l'esemble des variables
      * Le nombre de résultat est limité par les paramettres 'limit' et 'start'
@@ -49,7 +48,6 @@ class VariableController extends AbstractController
         $limit = $request->query->get('limit');
 
         $this->firstMaxResult->setFirstMaxresult($start, $limit);
-
         try {
             $result = $this->variableRepository->findByInstallation($installation, $limit, $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['variable']]);

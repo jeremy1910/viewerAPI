@@ -16,74 +16,74 @@ class Badge
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue()
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $id;
 
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $matricule;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $operateurCreateur;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $dateCreation;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $dateDebVal;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $dateFinVal;
 
     /**
      * @ORM\Column(type="datetime",  nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $dateDebVal2;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $dateFinVal2;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $valide;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $code1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"badge"})
+     * @Groups({"badge", "badgeGlecteurVariable"})
      */
     private $prenom;
 
@@ -103,9 +103,16 @@ class Badge
      */
     private $appID;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="\App\Entity\BadgeGlecteurVariable", mappedBy="badge")
+	 * @Groups({"badge"})
+	 */
+    private $badgeGlecteurVariable;
+
     public function __construct()
     {
         $this->profil = new ArrayCollection();
+        $this->badgeGlecteurVariable = new ArrayCollection();
     }
 
 
@@ -318,6 +325,38 @@ class Badge
         return $this;
     }
 
+	/**
+	 * @return mixed
+	 */
+	public function getBadgeGlecteurVariable()
+	{
+		return $this->badgeGlecteurVariable;
+	}
 
+	/**
+	 * @param mixed $badgeGlecteurVariable
+	 * @return Badge
+	 */
+	public function setBadgeGlecteurVariable($badgeGlecteurVariable)
+	{
+		$this->badgeGlecteurVariable = $badgeGlecteurVariable;
+		return $this;
+	}
+
+
+
+	public function addBadgeGlecteurVariable(BadgeGlecteurVariable $badgeGlecteurVariable){
+		if (!$this->badgeGlecteurVariable->contains($badgeGlecteurVariable))
+		{
+			$this->badgeGlecteurVariable->add($badgeGlecteurVariable);
+		}
+	}
+
+	public function removeBadgeGlecteurVariable(BadgeGlecteurVariable $badgeGlecteurVariable){
+		if ($this->badgeGlecteurVariable->contains($badgeGlecteurVariable))
+		{
+			$this->badgeGlecteurVariable->remove($badgeGlecteurVariable);
+		}
+	}
 
 }

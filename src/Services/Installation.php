@@ -192,18 +192,21 @@ class Installation
         $profils = $this->profilRepository->findBy(['installation' => $this->installation->getId()]);
         $badges = $this->badgeRepository->findBy(['installation' => $this->installation->getId()]);
 
+
         foreach ($glecteurs as $glecteur){
             $this->entityManager->remove($glecteur);
         }
-        foreach ($variables as $variable){
-            $this->entityManager->remove($variable);
-        }
-        foreach ($badges as $badge){
-            $this->entityManager->remove($badge);
-        }
-        foreach ($profils as $profil){
-            $this->entityManager->remove($profil);
-        }
+		foreach ($profils as $profil){
+			$this->entityManager->remove($profil);
+		}
+		foreach ($variables as $variable){
+			$this->entityManager->remove($variable);
+		}
+		foreach ($badges as $badge){
+			$this->entityManager->remove($badge);
+		}
+
+
         $this->entityManager->remove($this->installation);
 
         $this->entityManager->flush();
