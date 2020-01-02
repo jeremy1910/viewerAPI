@@ -55,7 +55,7 @@ class BadgeController extends AbstractController
         $this->firstMaxResult->setFirstMaxresult($start, $limit);
 
         try{
-            $result = $this->badgeRepository->findByInstallation($installation, $limit, $start);
+            $result = $this->badgeRepository->findByInstallation($installation, $limit, $start, false);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
 			$this->decodePH($normalizedData);
@@ -80,8 +80,12 @@ class BadgeController extends AbstractController
      *
      * @Route("/api/badges/{id}", name="badges_get_one", methods={"GET"})
      */
-    public function badges_get_one(Badge $badge){
+    public function badges_get_one($id){
         try {
+			$badge = $this->badgeRepository->find($id);
+			if(!$badge){
+				throw new \Exception("Le badge avec l'id : $id n'existe pas");
+			}
             $normalizedData['result'][] = $this->normalizer->normalize($badge, null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = 1;
 			$this->decodePH($normalizedData);
@@ -210,7 +214,7 @@ class BadgeController extends AbstractController
 
         $this->firstMaxResult->setFirstMaxresult($start, $limit);
         try {
-            $result = $this->badgeRepository->findByCode1($prenom, $installation,(int) $limit, (int) $start);
+            $result = $this->badgeRepository->findByPrenom($prenom, $installation,(int) $limit, (int) $start);
             $normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
             $normalizedData['maxCount'] = $result['countMax'];
 			$this->decodePH($normalizedData);
@@ -227,36 +231,36 @@ class BadgeController extends AbstractController
 
     }
 
-	/**
-	 * @param Installation $installation
-	 * @param Request $request
-	 * @return JsonResponse
-	 * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-	 * @Route("/api/{installation}/badgeGlecteurVariable", name="badgesGlecteurVariable", methods={"GET"})
-	 */
-	public function badges_search_individual_right(Installation $installation, Request $request){
-
-		$start = $request->query->get('start');
-		$limit = $request->query->get('limit');
-
-		$this->firstMaxResult->setFirstMaxresult($start, $limit);
-		try {
-			$result = $this->badgeRepository->findIndividualRight($installation,(int) $limit, (int) $start);
-			$normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
-			$normalizedData['maxCount'] = $result['countMax'];
-			$this->decodePH($normalizedData);
-			$normalizedData['success'] = true;
-			$response = $this->encoder->encode($normalizedData, 'json');
-		}
-		catch (\Exception $e)
-		{
-			$normalizedData['result'] = $e->getMessage();
-			$normalizedData['success'] = false;
-			$response = $this->encoder->encode($normalizedData, 'json');
-		}
-		return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
-
-	}
+//	/**
+//	 * @param Installation $installation
+//	 * @param Request $request
+//	 * @return JsonResponse
+//	 * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+//	 * @Route("/api/{installation}/badgeGlecteurVariable", name="badgesGlecteurVariable", methods={"GET"})
+//	 */
+//	public function badges_search_individual_right(Installation $installation, Request $request){
+//
+//		$start = $request->query->get('start');
+//		$limit = $request->query->get('limit');
+//
+//		$this->firstMaxResult->setFirstMaxresult($start, $limit);
+//		try {
+//			$result = $this->badgeRepository->findIndividualRight($installation,(int) $limit, (int) $start);
+//			$normalizedData['result'] = $this->normalizer->normalize($result['result'], null, ['groups' => ['badge']]);
+//			$normalizedData['maxCount'] = $result['countMax'];
+//			$this->decodePH($normalizedData);
+//			$normalizedData['success'] = true;
+//			$response = $this->encoder->encode($normalizedData, 'json');
+//		}
+//		catch (\Exception $e)
+//		{
+//			$normalizedData['result'] = $e->getMessage();
+//			$normalizedData['success'] = false;
+//			$response = $this->encoder->encode($normalizedData, 'json');
+//		}
+//		return new JsonResponse($response, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
+//
+//	}
 
 	/**
 	 * @param array $normalizedData

@@ -41,7 +41,7 @@ class Glecteur
     private $Extention;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Variable", inversedBy="glecteurs", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Variable", inversedBy="glecteurs", cascade={"remove", "persist"})
      * @Groups({"glecteur"})
      *
      */
@@ -49,7 +49,7 @@ class Glecteur
 
 
     /**
-     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="glecteur", cascade={"remove"}, cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="glecteur", cascade={"remove"}, cascade={"remove", "persist"})
      * @Groups({"glecteur"})
      */
     private $profilGlecteurVariable;

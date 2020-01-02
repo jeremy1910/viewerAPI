@@ -24,25 +24,30 @@ class ProfilGlecteurVariable
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Profil", inversedBy="profilGlecteurVariable", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Profil", inversedBy="profilGlecteurVariable", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="profil_id", referencedColumnName="id", nullable=false)
      * @Groups({"glecteur"})
      */
     private $profil;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Glecteur", inversedBy="profilGlecteurVariable", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Glecteur", inversedBy="profilGlecteurVariable", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="glecteur_id", referencedColumnName="id", nullable=false)
      * @Groups({"profil", "variable"})
      */
     private $glecteur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Variable", inversedBy="profilGlecteurVariable", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Variable", inversedBy="profilGlecteurVariable", cascade={"remove", "persist"})
      * @ORM\JoinColumn(name="variable_id", referencedColumnName="id", nullable=false)
      * @Groups({"profil"})
      */
     private $variable;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Installation")
+	 */
+	private $installation;
 
     /**
      * @return mixed
@@ -97,6 +102,24 @@ class ProfilGlecteurVariable
         $this->variable = $variable;
         return $this;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getInstallation()
+	{
+		return $this->installation;
+	}
+
+	/**
+	 * @param mixed $installation
+	 * @return ProfilGlecteurVariable
+	 */
+	public function setInstallation($installation)
+	{
+		$this->installation = $installation;
+		return $this;
+	}
 
 
 

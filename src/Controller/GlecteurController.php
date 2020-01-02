@@ -75,9 +75,12 @@ class GlecteurController extends AbstractController
      *
      * @Route("/api/glecteurs/{id}", name="glecteurs_get_one", methods={"GET"})
      */
-    public function glecteurs_get_one(Glecteur $glecteur){
-
+    public function glecteurs_get_one($id){
         try{
+			$glecteur = $this->glecteurRepository->find($id);
+			if(!$glecteur){
+				throw new \Exception("Le groupe de lecteur avec l'id : $id n'existe pas");
+			}
             $normalizedData['result'][] = $this->normalizer->normalize($glecteur, null, ['groups' => ['glecteur']]);
             $normalizedData['maxCount'] = 1;
 

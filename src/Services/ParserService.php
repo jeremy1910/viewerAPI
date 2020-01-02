@@ -12,16 +12,17 @@ namespace App\Services;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Csv\Statement;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ParserService
 {
 
-    public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $entityManager)
+    public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
         $this->parameterBag = $parameterBag;
         $this->entityManager = $entityManager;
-
+		$this->logger = $logger;
 
     }
 
@@ -30,6 +31,10 @@ class ParserService
     protected $parameterBag;
     protected $reader;
     protected $stmt;
+	protected $logger;
+	/**
+	 * @var $installation \App\Entity\Installation
+	 */
     protected $installation;
 
     static $badges = array();

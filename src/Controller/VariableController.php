@@ -71,9 +71,13 @@ class VariableController extends AbstractController
      *
      * @Route("/api/variables/{id}", name="variables_get_one", methods={"GET"})
      */
-    public function variables_get_one(Variable $variable)
+    public function variables_get_one($id)
     {
         try {
+			$variable = $this->variableRepository->find($id);
+			if(!$variable){
+				throw new \Exception("La variable avec l'id : $id n'existe pas");
+			}
             $normalizedData['result'][] = $this->normalizer->normalize($variable, null, ['groups' => ['variable']]);
             $normalizedData['maxCount'] = 1;
 			$this->decodePH($normalizedData);

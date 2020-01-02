@@ -13,6 +13,7 @@ namespace App\Services;
 use App\Repository\BadgeRepository;
 use App\Repository\GlecteurRepository;
 use App\Repository\InstallationRepository;
+use App\Repository\ProfilGlecteurVariablephRepository;
 use App\Repository\ProfilRepository;
 use App\Repository\VariableRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,7 +38,8 @@ class Installation
                                 GlecteurRepository $glecteurRepository,
                                 VariableRepository $variableRepository,
                                 BadgeRepository $badgeRepository,
-                                ProfilRepository $profilRepository
+                                ProfilRepository $profilRepository,
+								ProfilGlecteurVariablephRepository $profilGlecteurVariablephRepository
     ){
         $this->parameterBag = $parameterBag;
         $this->filesystem = $filesystem;
@@ -49,6 +51,7 @@ class Installation
         $this->variableRepository = $variableRepository;
         $this->profilRepository = $profilRepository;
         $this->badgeRepository = $badgeRepository;
+        $this->profilGlecteurVariablephRepository = $profilGlecteurVariablephRepository;
     }
 
 
@@ -58,7 +61,7 @@ class Installation
     private $variableRepository;
     private $badgeRepository;
     private $profilRepository;
-
+	private $profilGlecteurVariablephRepository;
 
     private $parameterBag;
     private $filesystem;
@@ -89,41 +92,31 @@ class Installation
             throw new \Exception("Fichier zip accepté uniquement");
         }
 
-
-
-
-        //$installation->setPath($this->parameterBag->get('BaseInstallationPath') . $installation->getName(). '/');
-
-
         try {
             $this->installation->setName($request->request->get("installationName"));
             $errors = $this->validator->validate($this->installation);
             if (count($errors) > 0) {
-
                 $errorsString = (string) $errors;
-
                 throw new \Exception($errorsString);
             }
             //On vérifie si l'installation existe déjà
             if($this->isInstallationExist()){
                 throw new \Exception("installation deja existante, pour la modifier merci de passer par l'option de mise à jour");
             }
-
             //On décompresse le ficheir zip et on le supprime
             $this->handelZipFile($file);
 
             //On vérifier si tous les fichiers requis sont présents
             $this->checkInstallationValidity();
 
-            //On ajoute l'installation à la base de donnés
-            $this->addInInstallationListDB();
-            $this->loadInstallation();
+            //On ajoute l'installation à la base de données
+			$this->entityManager->persist($this->installation);
+			$this->loadInstallation();
+			//$this->addInInstallationListDB();
 
-
-
-        } catch (\Exception $e) {
-            $this->entityManager->remove($this->installation);
-            $this->entityManager->flush();
+		} catch (\Exception $e) {
+//            $this->entityManager->remove($this->installation);
+//            $this->entityManager->flush();
             throw new \Exception($e->getMessage());
         }finally{
             $this->filesystem->remove($this->parameterBag->get('BaseInstallationPath'));
@@ -187,34 +180,11 @@ class Installation
 
     public function removeInstallation(){
 
-        $glecteurs = $this->glecteurRepository->findBy(['installation' => $this->installation->getId()]);
-        $variables = $this->variableRepository->findBy(['installation' => $this->installation->getId()]);
-        $profils = $this->profilRepository->findBy(['installation' => $this->installation->getId()]);
-        $badges = $this->badgeRepository->findBy(['installation' => $this->installation->getId()]);
-
-
-        foreach ($glecteurs as $glecteur){
-            $this->entityManager->remove($glecteur);
-        }
-		foreach ($profils as $profil){
-			$this->entityManager->remove($profil);
-		}
-		foreach ($variables as $variable){
-			$this->entityManager->remove($variable);
-		}
-		foreach ($badges as $badge){
-			$this->entityManager->remove($badge);
-		}
-
-
-        $this->entityManager->remove($this->installation);
-
-        $this->entityManager->flush();
-
+    	$this->installationRepository->deleteAllContentByInstallationId($this->installation);
 
     }
     private function addInInstallationListDB(){
-        $this->entityManager->persist($this->installation);
+
         $this->entityManager->flush();
     }
 

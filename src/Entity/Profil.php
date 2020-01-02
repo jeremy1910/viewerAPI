@@ -41,13 +41,13 @@ class Profil
 
 
     /**
-     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="profil")
+     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="profil", cascade={"persist", "remove"})
      * @Groups({"profil"})
      */
     private $profilGlecteurVariable;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Badge", mappedBy="profil")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Badge", mappedBy="profil", cascade={"persist", "remove"})
      */
     private $badge;
 

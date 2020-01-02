@@ -87,9 +87,13 @@ class ProfilController extends AbstractController
      *
      * @Route("/api/profils/{id}", name="profils_get_one", methods={"GET"})
      */
-    public function profils_get_one(Profil $profil){
+    public function profils_get_one($id){
 
         try{
+			$profil = $this->profilRepository->find($id);
+			if(!$profil){
+				throw new \Exception("Le profil avec l'id : $id n'existe pas");
+			}
             $normalizedData['result'][] = $this->normalizer->normalize($profil, null, ['groups' => ['profil']]);
             $normalizedData['maxCount'] = 1;
             $this->decodePH($normalizedData);

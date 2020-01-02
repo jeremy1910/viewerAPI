@@ -19,6 +19,25 @@ class InstallationRepository extends ServiceEntityRepository
         parent::__construct($registry, Installation::class);
     }
 
+	public function deleteAllContentByInstallationId(Installation $installation)
+	{
+		$conn = $this->getEntityManager()->getConnection();
+		$id = $installation->getId();
+		$sql = '
+        delete from badge_glecteur_variable where installation_id = :id;
+		delete from profil_glecteur_variable where installation_id = :id;
+		delete from badge where installation_id = :id;
+		delete from glecteur where installation_id = :id;
+		delete from profil where installation_id = :id;
+		delete from variable where installation_id = :id;
+		delete from installation where id = :id;
+        ';
+		$stmt = $conn->prepare($sql);
+		$stmt->execute(['id' => $id]);
+
+	}
+
+
     // /**
     //  * @return Installation[] Returns an array of Installation objects
     //  */

@@ -2,20 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Badge;
-use App\Entity\Profil;
-use App\Entity\ProfilGlecteurVariable;
-
-use App\Entity\Variable;
-use App\Repository\ProfilRepository;
-use App\Services\GlecteurDefService;
-use App\Services\GlecteurService;
 use App\Services\HandelParserService;
 use App\Services\HandelTranslatePH;
 use App\Services\Installation;
-use App\Services\ProfilGlecteurVariableService;
-use App\Services\ProfilService;
-use App\Services\VariableService;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +54,7 @@ class IndexController extends AbstractController
     /**
      * @Route("/addInstallation", name="addInstallation", methods={"POST"})
      */
-    public function addInstallation(Installation $installation, Request $request){
+    public function addInstallation(Installation $installation, Request $request, LoggerInterface $logger){
         set_time_limit(0);
         try{
             $installation->init()->addInstallation($request);
@@ -72,8 +62,6 @@ class IndexController extends AbstractController
         }catch (\Exception $e){
             $message = $this->encoder->encode(["success" => false, "message" => $e->getMessage()], 'json');
         }
-
-
         return new JsonResponse($message, Response::HTTP_OK, ['Access-Control-Allow-Origin' => '*'], true);
     }
 

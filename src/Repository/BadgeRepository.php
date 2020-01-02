@@ -21,9 +21,19 @@ class BadgeRepository extends ServiceEntityRepository
         parent::__construct($registry, Badge::class);
     }
 
-    public function findByInstallation(Installation $installation, int $limit, int $start){
-        $query = $this->createQueryBuilder('b')
-            ->where('b.installation = :installation')
+	/**
+	 * @param Installation $installation
+	 * @param int $limit
+	 * @param int $start
+	 * @param bool $withIndivudualRight
+	 * @return array
+	 */
+	public function findByInstallation(Installation $installation, int $limit, int $start, bool $withIndivudualRight = false){
+        $query = $this->createQueryBuilder('b');
+        if($withIndivudualRight){
+			$query->join('b.badgeGlecteurVariable', 'ir');
+		}
+		$query->where('b.installation = :installation')
             ->setParameter('installation', $installation)
             ->setFirstResult($start)
             ->setMaxResults($limit);
@@ -36,10 +46,21 @@ class BadgeRepository extends ServiceEntityRepository
 
     }
 
-    public function findByNom(string $nom, Installation $installation ,int $limit, int $start){
+	/**
+	 * @param string $nom
+	 * @param Installation $installation
+	 * @param int $limit
+	 * @param int $start
+	 * @param bool $withIndivudualRight
+	 * @return array
+	 */
+	public function findByNom(string $nom, Installation $installation , int $limit, int $start, bool $withIndivudualRight = false){
         $query = $this->createQueryBuilder('b')
-            ->where('b.nom LIKE :nom')
-            ->andwhere('b.installation = :installation')
+            ->where('b.nom LIKE :nom');
+        if($withIndivudualRight){
+        	$query->join('b.badgeGlecteurVariable', 'ir');
+        }
+		$query->andwhere('b.installation = :installation')
             ->setParameter('installation', $installation)
             ->setParameter('nom', '%'.$nom.'%')
             ->setFirstResult($start)
@@ -51,10 +72,21 @@ class BadgeRepository extends ServiceEntityRepository
         return ['result' => $result, 'countMax' => $c];
     }
 
-    public function findByCode1(string $code1, Installation $installation ,int $limit, int $start){
+	/**
+	 * @param string $code1
+	 * @param Installation $installation
+	 * @param int $limit
+	 * @param int $start
+	 * @param bool $withIndivudualRight
+	 * @return array
+	 */
+	public function findByCode1(string $code1, Installation $installation , int $limit, int $start, bool $withIndivudualRight = false){
         $query = $this->createQueryBuilder('b')
-            ->where('b.code1 LIKE :code1')
-            ->andwhere('b.installation = :installation')
+            ->where('b.code1 LIKE :code1');
+		if($withIndivudualRight){
+        	$query->join('b.badgeGlecteurVariable', 'ir');
+        }
+            $query->andwhere('b.installation = :installation')
             ->setParameter('installation', $installation)
             ->setParameter('code1', '%'.$code1.'%')
             ->setFirstResult($start)
@@ -66,10 +98,21 @@ class BadgeRepository extends ServiceEntityRepository
         return ['result' => $result, 'countMax' => $c];
     }
 
-    public function findByPrenom(string $prenom, Installation $installation ,int $limit, int $start){
+	/**
+	 * @param string $prenom
+	 * @param Installation $installation
+	 * @param int $limit
+	 * @param int $start
+	 * @param bool $withIndivudualRight
+	 * @return array
+	 */
+	public function findByPrenom(string $prenom, Installation $installation , int $limit, int $start, bool $withIndivudualRight = false){
         $query = $this->createQueryBuilder('b')
-            ->where('b.prenom LIKE :prenom')
-            ->andwhere('b.installation = :installation')
+            ->where('b.prenom LIKE :prenom');
+		if($withIndivudualRight){
+			$query->join('b.badgeGlecteurVariable', 'ir');
+		}
+            $query->andwhere('b.installation = :installation')
             ->setParameter('installation', $installation)
             ->setParameter('prenom', '%'.$prenom.'%')
             ->setFirstResult($start)
@@ -81,19 +124,5 @@ class BadgeRepository extends ServiceEntityRepository
         return ['result' => $result, 'countMax' => $c];
     }
 
-	public function findIndividualRight(Installation $installation, int $limit, int $start)
-	{
 
-		$query = $this->createQueryBuilder('b')
-			->innerJoin('b.badgeGlecteurVariable', 'ir')
-			->where('b.installation = :installation')
-			->setParameter('installation', $installation)
-			->setFirstResult($start)
-			->setMaxResults($limit);
-		$result = $query->getQuery()->getResult();
-
-		$c = count(new Paginator($query, $fetchJoinCollection = true));
-
-		return ['result' => $result, 'countMax' => $c];
-	}
 }

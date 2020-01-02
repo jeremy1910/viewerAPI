@@ -88,7 +88,7 @@ class Badge
     private $prenom;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Profil", inversedBy="badge")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Profil", inversedBy="badge", cascade={"persist", "remove"})
      * @Groups({"badge"})
      */
     private $profil;
@@ -284,14 +284,15 @@ class Badge
     public function addProfil(Profil $profil){
         if (!$this->profil->contains($profil))
         {
-            $this->profil->add($profil);
+            $this->profil[] = $profil;
         }
+        return $this;
     }
 
     public function removeProfil(Profil $profil){
         if ($this->profil->contains($profil))
         {
-            $this->profil->remove($profil);
+            $this->profil->removeElement($profil);
         }
     }
 
