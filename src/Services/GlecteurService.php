@@ -25,27 +25,15 @@ class GlecteurService extends ParserService
 
         $records = $this->stmt->process($this->reader);
 
-		$iterable = SimpleBatchIteratorAggregate::fromTraversableResult(
-			call_user_func(function () use ($records) {
 				foreach ($records as $offset => $record) {
-
 					$Glecteur = new Glecteur();
 					$Glecteur->setAppID($record['Numero']);
 					$Glecteur->setInstallation($this->installation);
-
 					$Glecteur->setNom($this->protectString($record['Nom']));
 					$Glecteur->setDescription($this->protectString($record['Description']));
-					$this->entityManager->persist($Glecteur);
 					self::$glecteurs[$Glecteur->getAppID()] = $Glecteur;
-					$this->entityManager->persist($Glecteur);
-					yield $offset;
 				}
-			}),
-			$this->entityManager,
-			100,
-			Glecteur::class
-		);
-		foreach ($iterable as $record) {}
+
 		$this->logger->info('Glecteur = OK');
     }
 

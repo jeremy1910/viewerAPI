@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Entity\Glecteur;
+use App\Entity\Variable;
 use App\Repository\GlecteurRepository;
 use App\Repository\VariableRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +35,6 @@ class GlecteurDefService extends ParserService
 	public function makeAssociation(){
 		$records = $this->stmt->process($this->reader);
 
-
 		foreach ($records as $offset => $record) {
 			/**
 			 * @var $glecteur Glecteur
@@ -43,10 +43,34 @@ class GlecteurDefService extends ParserService
 			$variable = key_exists($record['Variable'], self::$variables) ? self::$variables[$record['Variable']] : null ;
 			if($glecteur && $variable){
 				$glecteur->addVariable($variable);
-				$this->entityManager->flush();
 			}
 		}
 		$this->logger->info('GlecteurDef = OK');
+
+
+		$i=0;
+		foreach (self::$glecteurs as $glecteur){
+			$this->entityManager->persist($glecteur);
+			if (($i % 100) === 0) {
+				$this->entityManager->flush();
+				$this->entityManager->clear(Glecteur::class); // Detaches all objects from Doctrine!
+			}
+			$i++;
+		}
+		$this->entityManager->flush();
+		$this->entityManager->clear(Glecteur::class); // Detaches all objects from Doctrine!
+
+		$i=0;
+		foreach (self::$variables as $variable){
+			$this->entityManager->persist($variable);
+			if (($i % 100) === 0) {
+				$this->entityManager->flush();
+				$this->entityManager->clear(Variable::class); // Detaches all objects from Doctrine!
+			}
+			$i++;
+		}
+		$this->entityManager->flush();
+		$this->entityManager->clear(Variable::class); // Detaches all objects from Doctrine!
 
 //        foreach ($records as $offset => $record) {
 //            $glecteur = key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null ;

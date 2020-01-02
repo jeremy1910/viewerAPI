@@ -34,6 +34,10 @@ class ProfilGlecteurVariableService extends ParserService
 	private $glecteurRepository;
 	private $variableRepository;
 
+
+	/**
+	 * Profils d'accès
+	 */
 	public function makeAssociation(){
 
 		$records = $this->stmt->process($this->reader);

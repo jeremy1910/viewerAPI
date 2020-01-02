@@ -34,8 +34,6 @@ class VariableService extends ParserService
 
         $records = $this->stmt->process($this->reader);
 
-		$iterable = SimpleBatchIteratorAggregate::fromTraversableResult(
-			call_user_func(function () use ($records) {
 				foreach ($records as $offset => $record) {
 
 					$variable = new Variable();
@@ -56,15 +54,11 @@ class VariableService extends ParserService
 					$tranchesSerialized = $this->serializer->serialize($tranches, 'json');
 					$variable->setExtension($tranchesSerialized);
 					self::$variables[$variable->getAppID()] = $variable;
-					$this->entityManager->persist($variable);
-					yield $offset;
 				}
-			}),
-			$this->entityManager,
-			100,
-			Variable::class
-		);
-		foreach ($iterable as $record) {}
+
 		$this->logger->info('Variable = OK');
+
+
+
     }
 }

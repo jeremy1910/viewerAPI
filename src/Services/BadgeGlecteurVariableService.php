@@ -28,6 +28,11 @@ class BadgeGlecteurVariableService extends ParserService
 	private $glecteurRepository;
 	private $variableRepository;
 
+
+	/**
+	 * Droits Individuels
+	 */
+
 	public function makeAssociation(){
 
 		$records = $this->stmt->process($this->reader);

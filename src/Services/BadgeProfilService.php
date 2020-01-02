@@ -1,27 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jeje
- * Date: 15/10/19
- * Time: 22:01
- */
 
 namespace App\Services;
-
-
 
 use App\Entity\Badge;
 use App\Entity\Profil;
 use App\Repository\BadgeRepository;
 use App\Repository\ProfilRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineBatchUtils\BatchProcessing\SimpleBatchIteratorAggregate;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class BadgeProfilService extends ParserService
 {
-
 	public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $entityManager, BadgeRepository $badgeRepository, ProfilRepository $profilRepository, LoggerInterface $logger)
 	{
 		parent::__construct($parameterBag, $entityManager, $logger);
@@ -47,10 +37,33 @@ class BadgeProfilService extends ParserService
 			$profil = key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null;
 			if ($badge && $profil) {
 				$badge->addProfil($profil);
-				$this->entityManager->flush();
 			}
 
 		}
 		$this->logger->info('BadgePrifilService = OK');
+
+//		$i=0;
+//		foreach (self::$badges as $badge){
+//			$this->entityManager->persist($badge);
+//			if (($i % 100) === 0) {
+//				$this->entityManager->flush();
+//				$this->entityManager->clear(Badge::class);
+//			}
+//			$i++;
+//		}
+//		$this->entityManager->flush();
+//		$this->entityManager->clear(Badge::class);
+
+		$i=0;
+		foreach (self::$profils as $profil){
+			$this->entityManager->persist($profil);
+			if (($i % 100) === 0) {
+				$this->entityManager->flush();
+				$this->entityManager->clear(Profil::class);
+			}
+			$i++;
+		}
+		$this->entityManager->flush();
+		$this->entityManager->clear(Profil::class);
 	}
 }

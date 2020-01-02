@@ -28,8 +28,7 @@ class BadgeService extends ParserService
 
     public function makeAssociation(){
         $records = $this->stmt->process($this->reader);
-		$iterable = SimpleBatchIteratorAggregate::fromTraversableResult(
-			call_user_func(function () use ($records) {
+
 				foreach ($records as $offset => $record) {
 					$badge = new Badge();
 					$badge->setAppID($record['Numero']);
@@ -46,17 +45,7 @@ class BadgeService extends ParserService
 					$badge->setPrenom($record['Prenom']);
 					$badge->setValide((bool) $record['Valide']);
 					self::$badges[$badge->getAppID()] = $badge;
-					$this->entityManager->persist($badge);
-					yield $offset;
 				}
-			}),
-			$this->entityManager,
-			100 ,// flush/clear after 100 iterations
-			Badge::class
-		);
-		foreach ($iterable as $record) {
-
-		}
 
 		$this->logger->info('Badge = OK');
     }

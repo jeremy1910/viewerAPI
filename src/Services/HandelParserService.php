@@ -41,15 +41,17 @@ class HandelParserService
     public function parseFiles(\App\Entity\Installation $installation){
 
         //$this->trucateTables();
-		$this->badgeService->init('Badge', $installation)->makeAssociation();
-		$this->profilService->init('Profil', $installation)->genProfil();
-		$this->badgeProfilService->init('BadgeProfil', $installation)->makeAssociation();
-		$this->glecteurService->init('Glecteur', $installation)->genGlecteur();
+		$this->badgeService->init('Badge', $installation)->makeAssociation(); //Création des badges en mémoire
+		$this->profilService->init('Profil', $installation)->genProfil(); //Création des Profils en mémoire
+		$this->glecteurService->init('Glecteur', $installation)->genGlecteur(); // Création des groupes de lecteurs en mémoire
 		$this->variableService->init('Variable', $installation)->genVariable();
 
 		$this->profilGlecteurVariableService->init('ProfilAcces', $installation)->makeAssociation();
 		$this->badgeGlecteurVariableService->init('BadgeAcces', $installation)->makeAssociation();
+
+		$this->badgeProfilService->init('BadgeProfil', $installation)->makeAssociation();
 		$this->glecteurDefService->init('GlecteurDef', $installation)->makeAssociation();
+
 	}
 
     private function trucateTables(){
