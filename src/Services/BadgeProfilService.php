@@ -23,7 +23,7 @@ class BadgeProfilService extends ParserService
 	private $badgeRepository;
 	private $profilRepository;
 
-	public function makeAssociation()
+	public function makeAssociationInMemory()
 	{
 		$records = $this->stmt->process($this->reader);
 		foreach ($records as $offset => $record) {
@@ -36,11 +36,14 @@ class BadgeProfilService extends ParserService
 			 */
 			$profil = key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null;
 			if ($badge && $profil) {
-				$badge->addProfil($profil);
+				unset(self::$badges2[$record['Badge']]);
+				unset(self::$profils2[$record['Profil']]);
+				$profil->addBadge($badge);
 			}
 
 		}
-		$this->logger->info('BadgePrifilService = OK');
+
+		$this->logger->info("**** Assocuiation des profils avec les badge en mémoire ****");
 
 //		$i=0;
 //		foreach (self::$badges as $badge){
@@ -53,17 +56,17 @@ class BadgeProfilService extends ParserService
 //		}
 //		$this->entityManager->flush();
 //		$this->entityManager->clear(Badge::class);
-
-		$i=0;
-		foreach (self::$profils as $profil){
-			$this->entityManager->persist($profil);
-			if (($i % 100) === 0) {
-				$this->entityManager->flush();
-				$this->entityManager->clear(Profil::class);
-			}
-			$i++;
-		}
-		$this->entityManager->flush();
-		$this->entityManager->clear(Profil::class);
+//
+//		$i=0;
+//		foreach (self::$profils as $profil){
+//			$this->entityManager->persist($profil);
+//			if (($i % 100) === 0) {
+//				$this->entityManager->flush();
+//				$this->entityManager->clear(Profil::class);
+//			}
+//			$i++;
+//		}
+//		$this->entityManager->flush();
+//		$this->entityManager->clear(Profil::class);
 	}
 }

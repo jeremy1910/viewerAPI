@@ -71,6 +71,9 @@ class ProfilGlecteurVariableService extends ParserService
 			$profilGlecteurVariable->setInstallation($this->installation);
 			if($profilGlecteurVariable->getGlecteur() && $profilGlecteurVariable->getVariable() && $profilGlecteurVariable->getProfil()){
 				$this->entityManager->persist($profilGlecteurVariable);
+				unset(self::$profils2[$record['Profil']]);
+				unset(self::$variables2[$record['PHoraire']]);
+				unset(self::$glecteurs2[$record['GLecteur']]);
 			}
 			if (($i % $batchSize) === 0) {
 				$this->entityManager->flush();
@@ -84,7 +87,7 @@ class ProfilGlecteurVariableService extends ParserService
 		$this->entityManager->clear(ProfilGlecteurVariable::class);
 
 
-		$this->logger->info('Profildef = OK');
+		$this->logger->info("**** Création de la table associative Profil - Glecteur - Variable (PH) ****");
 
 //        foreach ($records as $offset => $record) {
 //            $profilGlecteurVariable = new ProfilGlecteurVariable();

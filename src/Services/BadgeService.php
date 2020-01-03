@@ -26,27 +26,28 @@ class BadgeService extends ParserService
 
 
 
-    public function makeAssociation(){
-        $records = $this->stmt->process($this->reader);
+    public function createInMemory(){
 
-				foreach ($records as $offset => $record) {
-					$badge = new Badge();
-					$badge->setAppID($record['Numero']);
-					$badge->setMatricule($record['Matricule']);
-					$badge->setNom($record['Nom']);
-					$badge->setInstallation($this->installation);
-					$badge->setMatricule($record['Matricule']);
-					$badge->setDateDebVal(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateDebVal'])));
-					$badge->setDateDebVal2(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateDebVal2'])));
-					$badge->setDateFinVal(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateFinVal'])));
-					$badge->setDateFinVal2(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateFinVal2'])));
-					$badge->setDateCreation(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateCreation'])));
-					$badge->setCode1($record['Code1']);
-					$badge->setPrenom($record['Prenom']);
-					$badge->setValide((bool) $record['Valide']);
-					self::$badges[$badge->getAppID()] = $badge;
-				}
+			$records = $this->stmt->process($this->reader);
+			foreach ($records as $offset => $record) {
+				$badge = new Badge();
+				$badge->setAppID($record['Numero']);
+				$badge->setMatricule($record['Matricule']);
+				$badge->setNom($record['Nom']);
+				$badge->setInstallation($this->installation);
+				$badge->setMatricule($record['Matricule']);
+				$badge->setDateDebVal(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateDebVal'])));
+				$badge->setDateDebVal2(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateDebVal2'])));
+				$badge->setDateFinVal(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateFinVal'])));
+				$badge->setDateFinVal2(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateFinVal2'])));
+				$badge->setDateCreation(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateCreation'])));
+				$badge->setCode1($record['Code1']);
+				$badge->setPrenom($record['Prenom']);
+				$badge->setValide((bool) $record['Valide']);
+				self::$badges[$badge->getAppID()] = $badge;
+			}
 
-		$this->logger->info('Badge = OK');
+			self::$badges2 = self::$badges;
+			$this->logger->info("**** Création des badge en mémoire = OK | nb : ". count(self::$badges) . " ****");
     }
 }

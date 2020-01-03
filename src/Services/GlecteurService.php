@@ -21,7 +21,7 @@ class GlecteurService extends ParserService
     }
 
 
-    public function genGlecteur(){
+    public function createInMemory(){
 
         $records = $this->stmt->process($this->reader);
 
@@ -34,7 +34,8 @@ class GlecteurService extends ParserService
 					self::$glecteurs[$Glecteur->getAppID()] = $Glecteur;
 				}
 
-		$this->logger->info('Glecteur = OK');
+		self::$glecteurs2 = self::$glecteurs;
+		$this->logger->info("**** Création des groupes de lecteurs en mémoire = OK | nb : ". count(self::$glecteurs) . " ****");
     }
 
 }

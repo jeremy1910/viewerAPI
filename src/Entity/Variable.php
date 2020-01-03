@@ -34,13 +34,13 @@ class Variable
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Glecteur", mappedBy="Variable", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Glecteur", mappedBy="Variable")
      * @Groups({"variable"})
      */
     private $glecteurs;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="variable", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="variable")
      * @Groups({"variable"})
      */
     private $profilGlecteurVariable;
@@ -68,7 +68,7 @@ class Variable
     private $appID;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="\App\Entity\BadgeGlecteurVariable", mappedBy="badge", cascade={"persist", "remove"})
+	 * @ORM\OneToMany(targetEntity="\App\Entity\BadgeGlecteurVariable", mappedBy="badge")
 	 */
 	private $badgeGlecteurVariable;
 

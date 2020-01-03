@@ -14,7 +14,7 @@ class BadgeGlecteurVariable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-	 * @Groups({"badge", "badgeGlecteurVariable"})
+	 * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $id;
 

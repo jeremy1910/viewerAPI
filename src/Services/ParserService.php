@@ -42,6 +42,11 @@ class ParserService
     static $variables = array();
     static $glecteurs = array();
 
+	static $badges2 = array();
+	static $profils2 = array();
+	static $variables2 = array();
+	static $glecteurs2 = array();
+
     public function init(string $toParse, \App\Entity\Installation $installation){
 
         $this->installation = $installation;

@@ -49,7 +49,7 @@ class Glecteur
 
 
     /**
-     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="glecteur", cascade={"remove"}, cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="ProfilGlecteurVariable", mappedBy="glecteur")
      * @Groups({"glecteur"})
      */
     private $profilGlecteurVariable;
@@ -65,7 +65,8 @@ class Glecteur
     private $appID;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="\App\Entity\BadgeGlecteurVariable", mappedBy="badge", cascade={"remove"})
+	 * @ORM\OneToMany(targetEntity="\App\Entity\BadgeGlecteurVariable", mappedBy="glecteur")
+	 * @Groups({"glecteur"})
 	 */
 	private $badgeGlecteurVariable;
 

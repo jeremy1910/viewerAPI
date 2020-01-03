@@ -71,6 +71,9 @@ class BadgeGlecteurVariableService extends ParserService
 			$badgeGlecteurVariable->setInstallation($this->installation);
 			if($badgeGlecteurVariable->getGlecteur() && $badgeGlecteurVariable->getVariable() && $badgeGlecteurVariable->getBadge()){
 				$this->entityManager->persist($badgeGlecteurVariable);
+				unset(self::$badges2[$record['Badge']]);
+				unset(self::$variables2[$record['PHoraire']]);
+				unset(self::$glecteurs2[$record['GLecteur']]);
 			}
 			if (($i % $batchSize) === 0) {
 				$this->entityManager->flush();
@@ -83,7 +86,7 @@ class BadgeGlecteurVariableService extends ParserService
 		$this->entityManager->flush(); //Persist objects that did not make up an entire batch
 		$this->entityManager->clear(BadgeGlecteurVariable::class);
 
-		$this->logger->info('BadgeGelecteurService = OK');
+		$this->logger->info("**** Création de la table associative Badge - Glecteur - Variable (PH) ****");
 
 //		foreach ($records as $offset => $record) {
 //			$badgeGlecteurVariable = new BadgeGlecteurVariable();

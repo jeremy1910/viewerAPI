@@ -30,7 +30,7 @@ class VariableService extends ParserService
     private $serializer;
 
 
-    public function genVariable(){
+    public function createInMemory(){
 
         $records = $this->stmt->process($this->reader);
 
@@ -55,8 +55,8 @@ class VariableService extends ParserService
 					$variable->setExtension($tranchesSerialized);
 					self::$variables[$variable->getAppID()] = $variable;
 				}
-
-		$this->logger->info('Variable = OK');
+		self::$variables2 = self::$variables;
+		$this->logger->info("**** Création des variables en mémoire = OK | nb : ". count(self::$variables) . " ****");
 
 
 

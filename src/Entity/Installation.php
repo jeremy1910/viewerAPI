@@ -24,6 +24,18 @@ class Installation
      */
     private $name;
 
+	/**
+	 * @ORM\Column(type="integer")
+	 * @Assert\NotBlank(message="Le mode ne peut être vide")
+	 * @Assert\Range(
+	 *      min = 0,
+	 *      max = 15,
+	 *      minMessage = "Mode incorect doit être entre 0 et 15",
+	 *      maxMessage = "Mode incorect doit être entre 0 et 15"
+	 * )
+	 */
+    private $mode;
+
 
     public function getId(): ?int
     {
@@ -41,5 +53,24 @@ class Installation
 
         return $this;
     }
+
+	/**
+	 * @return mixed
+	 */
+	public function getMode()
+	{
+		return $this->mode;
+	}
+
+	/**
+	 * @param mixed $mode
+	 * @return Installation
+	 */
+	public function setMode($mode)
+	{
+		$this->mode = $mode;
+		return $this;
+	}
+
 
 }
