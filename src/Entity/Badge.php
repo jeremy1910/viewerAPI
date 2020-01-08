@@ -16,74 +16,74 @@ class Badge
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue()
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $id;
 
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $matricule;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $operateurCreateur;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $dateCreation;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $dateDebVal;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $dateFinVal;
 
     /**
      * @ORM\Column(type="datetime",  nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $dateDebVal2;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $dateFinVal2;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $valide;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $code1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"badge", "badgeGlecteurVariable"})
+     * @Groups({"badge", "badgeGlecteurVariable", "glecteur"})
      */
     private $prenom;
 

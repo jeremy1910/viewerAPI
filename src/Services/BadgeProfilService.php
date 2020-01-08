@@ -37,7 +37,7 @@ class BadgeProfilService extends ParserService
 			$profil = key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null;
 			if ($badge && $profil) {
 				unset(self::$badges2[$record['Badge']]);
-				unset(self::$profils2[$record['Profil']]);
+				//unset(self::$profils2[$record['Profil']]);
 				$profil->addBadge($badge);
 			}
 
@@ -45,28 +45,5 @@ class BadgeProfilService extends ParserService
 
 		$this->logger->info("**** Assocuiation des profils avec les badge en mémoire ****");
 
-//		$i=0;
-//		foreach (self::$badges as $badge){
-//			$this->entityManager->persist($badge);
-//			if (($i % 100) === 0) {
-//				$this->entityManager->flush();
-//				$this->entityManager->clear(Badge::class);
-//			}
-//			$i++;
-//		}
-//		$this->entityManager->flush();
-//		$this->entityManager->clear(Badge::class);
-//
-//		$i=0;
-//		foreach (self::$profils as $profil){
-//			$this->entityManager->persist($profil);
-//			if (($i % 100) === 0) {
-//				$this->entityManager->flush();
-//				$this->entityManager->clear(Profil::class);
-//			}
-//			$i++;
-//		}
-//		$this->entityManager->flush();
-//		$this->entityManager->clear(Profil::class);
 	}
 }

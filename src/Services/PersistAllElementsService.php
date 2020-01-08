@@ -28,27 +28,42 @@ class PersistAllElementsService extends ParserService
 	public function shouldPersistAllElement(\App\Entity\Installation $installation){
 
 		$mode = $installation->getMode();
-		$this->entityManager->clear();
+		//$this->entityManager->clear();
 		$this->tmpinstallation = $this->entityManager->find(\App\Entity\Installation::class, $installation->getId());
 		$this->logger->info("le mode est : $mode");
 		if($mode >= 0 && $mode <=15){
-			$binMode = decbin($mode);
-			if($binMode[0] === '1'){
-				$this->logger->info("*** Persistance de toutes les variables ". count(self::$variables2) ." ***");
-				$this->persistVariables();
+			if($mode > 0)
+			{
+				$binMode = decbin($mode);
+
+				$this->logger->info($binMode);
+				if(isset($binMode[0])){
+					if($binMode[0] === '1')
+					{
+						$this->logger->info("*** Persistance de toutes les variables ". count(self::$variables2) ." ***");
+						$this->persistVariables();
+					}
+				}
+				if(isset($binMode[1])){
+					if($binMode[1] === '1'){
+						$this->persistGlecteur();
+						$this->logger->info("*** Persistance de touts les groupe de lecteur *** ". count(self::$glecteurs2) ." ***");
+					}
+				}
+				if(isset($binMode[2])) {
+					if ($binMode[2] === '1') {
+						$this->persistProfil();
+						$this->logger->info("*** Persistance de touts les profils *** " . count(self::$profils2) . " ***");
+					}
+				}
+				if(isset($binMode[3])) {
+					if ($binMode[3] === '1') {
+						$this->persistBadges();
+						$this->logger->info("*** Persistance de touts les badges *** " . count(self::$badges2) . " ***");
+					}
+				}
 			}
-			if($binMode[1] === '1'){
-				$this->persistGlecteur();
-				$this->logger->info("*** Persistance de touts les groupe de lecteur *** ". count(self::$glecteurs2) ." ***");
-			}
-			if($binMode[2] === '1'){
-				$this->persistProfil();
-				$this->logger->info("*** Persistance de touts les profils *** ". count(self::$profils2) ." ***");
-			}
-			if($binMode[3] === '1'){
-				$this->persistBadges();
-				$this->logger->info("*** Persistance de touts les badges *** ". count(self::$badges2). " ***");
-			}
+
 
 		}else{
 			throw new \Exception("erreur de sur le mode d'import selectionné : '$mode' n'est pas valide");

@@ -42,7 +42,7 @@ class GlecteurDefService extends ParserService
 			$glecteur = key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null ;
 			$variable = key_exists($record['Variable'], self::$variables) ? self::$variables[$record['Variable']] : null ;
 			if($glecteur && $variable){
-				unset(self::$glecteurs2[$record['GLecteur']]);
+				//unset(self::$glecteurs2[$record['GLecteur']]);
 				unset(self::$variables2[$record['Variable']]);
 				$glecteur->addVariable($variable);
 			}
@@ -50,15 +50,5 @@ class GlecteurDefService extends ParserService
 		$this->logger->info("**** Assocuiation des groupe de lecteur avec les variables en mémoire ****");
 
 
-
-
-//        foreach ($records as $offset => $record) {
-//            $glecteur = key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null ;
-//            $variable = key_exists($record['Variable'], self::$variables) ? self::$variables[$record['Variable']] : null ;
-//            if($glecteur && $variable){
-//                $glecteur->addVariable($variable);
-//                $this->entityManager->persist($glecteur);
-//            }
-//        }
 	}
 }

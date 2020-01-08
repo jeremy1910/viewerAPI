@@ -28,7 +28,9 @@ class ProfilService extends ParserService
 			self::$profils[$profil->getAppID()] = $profil;
 		}
 		self::$profils2 = self::$profils;
+
 		$this->logger->info("**** Création des profils en mémoire = OK | nb : ". count(self::$profils) . " ****");
+
 
 	}
 }
