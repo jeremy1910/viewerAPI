@@ -47,7 +47,7 @@ class Profil
     private $profilGlecteurVariable;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Badge", inversedBy="profil", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Badge", mappedBy="profil", cascade={"persist", "remove"})
      */
     private $badge;
 

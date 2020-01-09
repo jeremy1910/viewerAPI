@@ -41,7 +41,7 @@ class Glecteur
     private $Extention;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Variable", inversedBy="glecteurs", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Variable", mappedBy="glecteurs", cascade={"remove", "persist"})
      * @Groups({"glecteur"})
      *
      */

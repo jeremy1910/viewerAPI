@@ -19,21 +19,21 @@ class BadgeGlecteurVariable
     private $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Badge", inversedBy="badgeGlecteurVariable", cascade={"persist", "remove"})
+	 * @ORM\ManyToOne(targetEntity="Badge", inversedBy="badgeGlecteurVariable", cascade={"persist"})
 	 * @ORM\JoinColumn(name="badge_id", referencedColumnName="id", nullable=false)
 	 * @Groups({"glecteur", "badgeGlecteurVariable"})
 	 */
 	private $badge;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Glecteur", inversedBy="badgeGlecteurVariable", cascade={"persist", "remove"})
+	 * @ORM\ManyToOne(targetEntity="Glecteur", inversedBy="badgeGlecteurVariable", cascade={"persist"})
 	 * @ORM\JoinColumn(name="glecteur_id", referencedColumnName="id", nullable=false)
 	 * @Groups({"profil", "variable", "badge", "badgeGlecteurVariable"})
 	 */
 	private $glecteur;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Variable", inversedBy="badgeGlecteurVariable", cascade={"persist", "remove"})
+	 * @ORM\ManyToOne(targetEntity="Variable", inversedBy="badgeGlecteurVariable", cascade={"persist"})
 	 * @ORM\JoinColumn(name="variable_id", referencedColumnName="id", nullable=false)
 	 * @Groups({"profil", "badge", "badgeGlecteurVariable"})
 	 */

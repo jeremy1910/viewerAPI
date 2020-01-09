@@ -88,7 +88,7 @@ class Badge
     private $prenom;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Profil", mappedBy="badge")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Profil", inversedBy="badge", cascade={"persist"})
      * @Groups({"badge"})
      */
     private $profil;

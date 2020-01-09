@@ -34,7 +34,7 @@ class Variable
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Glecteur", mappedBy="Variable")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Glecteur", inversedBy="Variable", cascade={"persist"})
      * @Groups({"variable"})
      */
     private $glecteurs;

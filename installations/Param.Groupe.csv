@@ -1,0 +1,21 @@
+TABLE=Groupe
+Numero;Nom;Description;Son;ConsignesSpe;ConsignesGen;Extension
+1;Commande Sortie;Commande Sortie;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+2;Etat Sortie;Etat Sortie;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+3;Commande Entrée;Commande Entrée;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+4;Etat entrée;Etat entrée;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+5;Etat Groupe;Etat Groupe;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+6;Commande Groupe;Commande Groupe;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+7;Etat Puissance;Etat Puissances integrées et puissances instantanée;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+8;Etat temperature;Etat des températures;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+9;Lecteurs;groupe de lecteurs;(Null);(Null);(Null);"<?xml version=""1.0"" encoding=""utf-16""?>\n<GroupeExtension xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">\n  <Fax>false</Fax>\n  <Email>false</Email>\n  <Sms>false</Sms>\n  <FaxInfo />\n  <EmailInfo />\n  <SmsInfo />\n</GroupeExtension>"
+12;Default com;Default de communication;(Null);(Null);(Null);(Null)
+13;ZONE 1 ;Zone 1 - 4eme Etage;(Null);(Null);(Null);(Null)
+14;ZONE 2;Zone 2 - 3eme Etage;(Null);(Null);(Null);(Null)
+15;ZONE 3;Zone 3 - 2eme Etage;(Null);(Null);(Null);(Null)
+16;ZONE 4;Zone 4 - 1er Etage;(Null);(Null);(Null);(Null)
+17;DETECTEUR;DETECTEUR INTRUSION;(Null);(Null);(Null);(Null)
+18;AutoProtection AP;AutoProtection AP;(Null);(Null);(Null);(Null)
+19;ZONE 5;Zone 5 - RDC;(Null);(Null);(Null);(Null)
+20;ZONE 6;Zone  6 - S/SOL;(Null);(Null);(Null);(Null)
+21;ZONE 20;Zone 20 - GENERALE;(Null);(Null);(Null);(Null)

@@ -26,6 +26,9 @@ class BadgeProfilService extends ParserService
 	public function makeAssociationInMemory()
 	{
 		$records = $this->stmt->process($this->reader);
+
+		$batchSize = 100;
+		$i = 0;
 		foreach ($records as $offset => $record) {
 			/**
 			 * @var $badge Badge
@@ -37,12 +40,20 @@ class BadgeProfilService extends ParserService
 			$profil = key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null;
 			if ($badge && $profil) {
 				unset(self::$badges2[$record['Badge']]);
-				//unset(self::$profils2[$record['Profil']]);
-				$profil->addBadge($badge);
+				unset(self::$profils2[$record['Profil']]);
+				$badge->addProfil($profil);
+				$this->entityManager->persist($badge);
 			}
+			if (($i % $batchSize) === 0) {
+				$this->entityManager->flush();
+				$this->entityManager->clear(Badge::class); // Detaches all objects from Doctrine!
+
+			}
+			$i++;
 
 		}
-
+		$this->entityManager->flush();
+		$this->entityManager->clear(Badge::class);
 		$this->logger->info("**** Assocuiation des profils avec les badge en mémoire ****");
 
 	}
