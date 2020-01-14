@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Entity\Badge;
 use App\Entity\BadgeGlecteurVariable;
+use App\Entity\Glecteur;
 use App\Entity\ProfilGlecteurVariable;
+use App\Entity\Variable;
 use App\Repository\BadgeRepository;
 use App\Repository\GlecteurRepository;
 use App\Repository\ProfilRepository;
@@ -18,7 +21,6 @@ class BadgeGlecteurVariableService extends ParserService
 	public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $entityManager, BadgeRepository $badgeRepository, GlecteurRepository $glecteurRepository, VariableRepository $variableRepository, LoggerInterface $logger)
 	{
 		parent::__construct($parameterBag, $entityManager, $logger);
-
 		$this->badgeRepository = $badgeRepository;
 		$this->glecteurRepository = $glecteurRepository;
 		$this->variableRepository = $variableRepository;
@@ -28,7 +30,6 @@ class BadgeGlecteurVariableService extends ParserService
 	private $glecteurRepository;
 	private $variableRepository;
 
-
 	/**
 	 * Droits Individuels
 	 */
@@ -37,39 +38,44 @@ class BadgeGlecteurVariableService extends ParserService
 
 		$records = $this->stmt->process($this->reader);
 
-//		$iterable = SimpleBatchIteratorAggregate::fromTraversableResult(
-//			call_user_func(function () use ($records) {
-//				foreach ($records as $offset => $record) {
-//					$badgeGlecteurVariable = new BadgeGlecteurVariable();
-//					$badgeGlecteurVariable->setBadge(key_exists($record['Badge'], self::$badges) ? self::$badges[$record['Badge']] : null );
-//					$badgeGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
-//					$badgeGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
-//					$badgeGlecteurVariable->setInstallation($this->installation);
-//					if($badgeGlecteurVariable->getGlecteur() && $badgeGlecteurVariable->getVariable() && $badgeGlecteurVariable->getBadge()){
-//						$this->entityManager->persist($badgeGlecteurVariable);
-//					}
-//					yield $offset;
-//				}
-//			}),
-//			$this->entityManager,
-//			100,
-//			BadgeGlecteurVariable::class
-//		);
-//		foreach ($iterable as $record) {}
-//
-//
-//
-
-
 		$batchSize = 100;
 		$i = 0;
+		$this->entityManager->clear();
 		foreach ($records as $key => $record){
 			$badgeGlecteurVariable = new BadgeGlecteurVariable();
-			$badgeGlecteurVariable->setBadge(key_exists($record['Badge'], self::$badges) ? self::$badges[$record['Badge']] : null );
-			$badgeGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
-			$badgeGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
-			$badgeGlecteurVariable->setInstallation($this->installation);
-			if($badgeGlecteurVariable->getGlecteur() && $badgeGlecteurVariable->getVariable() && $badgeGlecteurVariable->getBadge()){
+
+			$badge = $this->entityManager->getRepository(Badge::class)->findOneBy(['appID' => $record['Badge'], 'installation' => $this->installation->getId()]);
+			if($badge === null){
+				$badge = key_exists($record['Badge'], self::$badges) ? self::$badges[$record['Badge']] : null;
+
+			}
+
+
+			$variable = $this->entityManager->getRepository(Variable::class)->findOneBy(['appID' => $record['PHoraire'], 'installation' => $this->installation->getId()]);
+			if($variable === null){
+				$variable = key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null;
+
+			}
+
+			$glecteur = $this->entityManager->getRepository(Glecteur::class)->findOneBy(['appID' => $record['GLecteur'], 'installation' => $this->installation->getId()]);
+			if($glecteur === null){
+				$glecteur = key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null;
+
+			}
+
+
+			if($badge && $glecteur && $variable){
+				$installation = $this->entityManager->find(\App\Entity\Installation::class, $this->installation->getId());
+				$variable->setInstallation($installation);
+				$badge->setInstallation($installation);
+				$glecteur->setInstallation($installation);
+				$badgeGlecteurVariable->setBadge($badge);
+				$badgeGlecteurVariable->setVariable($variable);
+				$badgeGlecteurVariable->setGlecteur($glecteur);
+				$this->entityManager->persist($badge);
+				$this->entityManager->persist($variable);
+				$this->entityManager->persist($glecteur);
+				$badgeGlecteurVariable->setInstallation($installation);
 				$this->entityManager->persist($badgeGlecteurVariable);
 				unset(self::$badges2[$record['Badge']]);
 				unset(self::$variables2[$record['PHoraire']]);
@@ -87,20 +93,6 @@ class BadgeGlecteurVariableService extends ParserService
 		$this->entityManager->clear(BadgeGlecteurVariable::class);
 
 		$this->logger->info("**** Création de la table associative Badge - Glecteur - Variable (PH) ****");
-
-//		foreach ($records as $offset => $record) {
-//			$badgeGlecteurVariable = new BadgeGlecteurVariable();
-//
-//			$badgeGlecteurVariable->setBadge(key_exists($record['Badge'], self::$badges) ? self::$badges[$record['Badge']] : null );
-//			$badgeGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
-//			$badgeGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
-//			$badgeGlecteurVariable->setInstallation($this->installation);
-//			if($badgeGlecteurVariable->getGlecteur() && $badgeGlecteurVariable->getVariable() && $badgeGlecteurVariable->getBadge()){
-//				$this->entityManager->persist($badgeGlecteurVariable);
-//			}
-//		}
-//		$this->entityManager->flush();
-
 
 
 	}

@@ -69,7 +69,6 @@ class HandelParserService
 			 */
 			$this->badgeGlecteurVariableService->init('BadgeAcces', $installation)->makeAssociation();
 
-			dd('ok');
 			$this->persistAllElementsService->shouldPersistAllElement($installation);
 		}catch (\Exception $e){
 			throw $e;

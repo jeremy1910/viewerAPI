@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProfilRepository")
+ * @UniqueEntity("appID")
  */
 class Profil
 {
@@ -47,12 +49,12 @@ class Profil
     private $profilGlecteurVariable;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Badge", mappedBy="profil", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Badge", mappedBy="profil")
      */
     private $badge;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Installation")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Installation", cascade={"persist"})
      */
     private $installation;
 

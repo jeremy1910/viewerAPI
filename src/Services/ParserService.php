@@ -59,6 +59,7 @@ class ParserService
         $this->stmt = (new Statement())
             ->offset($this->parameterBag->get('default_data_offset_csv'))
         ;
+        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
         return $this;
     }
 

@@ -10,25 +10,26 @@ use App\Entity\Variable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PersistAllElementsService extends ParserService
 {
-	public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $entityManager, LoggerInterface $logger)
+	public function __construct(ParameterBagInterface $parameterBag, EntityManagerInterface $entityManager, LoggerInterface $logger, ValidatorInterface $validator)
 	{
 		parent::__construct($parameterBag, $entityManager, $logger);
-
+		$this->validator = $validator;
 	}
 
 	private $tmpinstallation;
-
+	private $validator;
 	/**
 	 * @param \App\Entity\Installation $installation
 	 * @throws \Exception
 	 */
 	public function shouldPersistAllElement(\App\Entity\Installation $installation){
-
+		$this->entityManager->clear();
 		$mode = $installation->getMode();
-		//$this->entityManager->clear();
+
 		$this->tmpinstallation = $this->entityManager->find(\App\Entity\Installation::class, $installation->getId());
 		$this->logger->info("le mode est : $mode");
 		if($mode >= 0 && $mode <=15){
@@ -76,8 +77,11 @@ class PersistAllElementsService extends ParserService
 			/**
 			 * @var $glecteur Glecteur
 			 */
-			$glecteur->setInstallation($this->tmpinstallation);
-			$this->entityManager->persist($glecteur);
+
+					$glecteur->setInstallation($this->tmpinstallation);
+					$this->entityManager->persist($glecteur);
+
+
 			if (($i % 100) === 0) {
 				$this->entityManager->flush();
 				$this->entityManager->clear(Glecteur::class);
@@ -94,8 +98,12 @@ class PersistAllElementsService extends ParserService
 			/**
 			 * @var $profil Profil
 			 */
-			$profil->setInstallation($this->tmpinstallation);
-			$this->entityManager->persist($profil);
+
+
+				$profil->setInstallation($this->tmpinstallation);
+				$this->entityManager->persist($profil);
+
+
 			if (($i % 100) === 0) {
 				$this->entityManager->flush();
 				$this->entityManager->clear(Profil::class);
@@ -112,8 +120,12 @@ class PersistAllElementsService extends ParserService
 			/**
 			 * @var $variable Variable
 			 */
-			$variable->setInstallation($this->tmpinstallation);
-			$this->entityManager->persist($variable);
+
+
+				$variable->setInstallation($this->tmpinstallation);
+				$this->entityManager->persist($variable);
+
+
 			if (($i % 100) === 0) {
 				$this->entityManager->flush();
 				$this->entityManager->clear(Variable::class);
@@ -130,8 +142,12 @@ class PersistAllElementsService extends ParserService
 			/**
 			 * @var $badge Badge
 			 */
-			$badge->setInstallation($this->tmpinstallation);
-			$this->entityManager->persist($badge);
+
+
+				$badge->setInstallation($this->tmpinstallation);
+				$this->entityManager->persist($badge);
+
+
 			if (($i % 100) === 0) {
 				$this->entityManager->flush();
 				$this->entityManager->clear(Badge::class);

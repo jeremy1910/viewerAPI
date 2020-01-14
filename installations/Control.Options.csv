@@ -1,8 +1,0 @@
-TABLE=Options
-Nom;Valeur
-Code1;Code principal 
-Info1_1;Date de naissance
-Info1_2;Etablissement Emetteur
-Info1_3;Code de Bibliothèque
-Info1_4;Type Personne
-NodeProgHoraire;PH

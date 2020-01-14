@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jeje
- * Date: 15/10/19
- * Time: 21:29
- */
 
 namespace App\Services;
 
@@ -34,7 +28,7 @@ class BadgeService extends ParserService
 				$badge->setAppID($record['Numero']);
 				$badge->setMatricule($record['Matricule']);
 				$badge->setNom($record['Nom']);
-				$badge->setInstallation($this->installation);
+//				$badge->setInstallation($this->installation);
 				$badge->setMatricule($record['Matricule']);
 				$badge->setDateDebVal(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateDebVal'])));
 				$badge->setDateDebVal2(\DateTime::createFromFormat('d-m-Y H:i:s', str_replace('/', '-', $record['DateDebVal2'])));

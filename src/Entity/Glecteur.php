@@ -5,12 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GlecteurRepository")
+ * @UniqueEntity("appID")
  */
 class Glecteur
 {
@@ -41,7 +43,7 @@ class Glecteur
     private $Extention;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Variable", mappedBy="glecteurs", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Variable", mappedBy="glecteurs")
      * @Groups({"glecteur"})
      *
      */

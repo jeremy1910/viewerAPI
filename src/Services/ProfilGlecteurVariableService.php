@@ -9,7 +9,10 @@
 namespace App\Services;
 
 
+use App\Entity\Glecteur;
+use App\Entity\Profil;
 use App\Entity\ProfilGlecteurVariable;
+use App\Entity\Variable;
 use App\Repository\GlecteurRepository;
 use App\Repository\ProfilRepository;
 use App\Repository\VariableRepository;
@@ -41,35 +44,46 @@ class ProfilGlecteurVariableService extends ParserService
 	public function makeAssociation(){
 
 		$records = $this->stmt->process($this->reader);
-//		$iterable = SimpleBatchIteratorAggregate::fromTraversableResult(
-//			call_user_func(function () use ($records) {
-//				foreach ($records as $offset => $record) {
-//					$this->entityManager->merge($this->installation);
-//					$profilGlecteurVariable = new ProfilGlecteurVariable();
-//					$profilGlecteurVariable->setProfil(key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null );
-//					$profilGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
-//					$profilGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
-//					$profilGlecteurVariable->setInstallation($this->installation);
-//					if($profilGlecteurVariable->getGlecteur() && $profilGlecteurVariable->getVariable() && $profilGlecteurVariable->getProfil()){
-//						$this->entityManager->persist($profilGlecteurVariable);
-//					}
-//					yield $offset;
-//				}
-//			}),
-//			$this->entityManager,
-//			100 // flush/clear after 100 iterations
-//		);
-//		foreach ($iterable as $record) {}
 
 		$batchSize = 100;
 		$i = 0;
+
 		foreach ($records as $key => $record){
 			$profilGlecteurVariable = new ProfilGlecteurVariable();
-			$profilGlecteurVariable->setProfil(key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null );
-			$profilGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
-			$profilGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
-			$profilGlecteurVariable->setInstallation($this->installation);
-			if($profilGlecteurVariable->getGlecteur() && $profilGlecteurVariable->getVariable() && $profilGlecteurVariable->getProfil()){
+
+
+
+			$profil = $this->entityManager->getRepository(Profil::class)->findOneBy(['appID' => $record['Profil'], 'installation' => $this->installation->getId()]);
+			if($profil === null){
+				$profil = key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null;
+
+			}
+
+
+			$variable = $this->entityManager->getRepository(Variable::class)->findOneBy(['appID' => $record['PHoraire'], 'installation' => $this->installation->getId()]);
+			if($variable === null){
+				$variable = key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null;
+
+			}
+
+			$glecteur = $this->entityManager->getRepository(Glecteur::class)->findOneBy(['appID' => $record['GLecteur'], 'installation' => $this->installation->getId()]);
+			if($glecteur === null){
+				$glecteur = key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null;
+
+			}
+
+			if($profil && $glecteur && $variable){
+				$installation = $this->entityManager->find(\App\Entity\Installation::class, $this->installation->getId());
+				$variable->setInstallation($installation);
+				$profil->setInstallation($installation);
+				$glecteur->setInstallation($installation);
+				$profilGlecteurVariable->setProfil($profil);
+				$profilGlecteurVariable->setVariable($variable);
+				$profilGlecteurVariable->setGlecteur($glecteur );
+				$this->entityManager->persist($profil);
+				$this->entityManager->persist($variable);
+				$this->entityManager->persist($glecteur);
+				$profilGlecteurVariable->setInstallation($installation);
 				$this->entityManager->persist($profilGlecteurVariable);
 				unset(self::$profils2[$record['Profil']]);
 				unset(self::$variables2[$record['PHoraire']]);
@@ -78,7 +92,6 @@ class ProfilGlecteurVariableService extends ParserService
 			if (($i % $batchSize) === 0) {
 				$this->entityManager->flush();
 				$this->entityManager->clear(ProfilGlecteurVariable::class); // Detaches all objects from Doctrine!
-
 			}
 			$i++;
 		}
@@ -89,18 +102,6 @@ class ProfilGlecteurVariableService extends ParserService
 
 		$this->logger->info("**** Création de la table associative Profil - Glecteur - Variable (PH) ****");
 
-//        foreach ($records as $offset => $record) {
-//            $profilGlecteurVariable = new ProfilGlecteurVariable();
-//
-//            $profilGlecteurVariable->setProfil(key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null );
-//            $profilGlecteurVariable->setVariable(key_exists($record['PHoraire'], self::$variables) ? self::$variables[$record['PHoraire']] : null );
-//            $profilGlecteurVariable->setGlecteur(key_exists($record['GLecteur'], self::$glecteurs) ? self::$glecteurs[$record['GLecteur']] : null );
-//            $profilGlecteurVariable->setInstallation($this->installation);
-//
-//            if($profilGlecteurVariable->getGlecteur() && $profilGlecteurVariable->getVariable() && $profilGlecteurVariable->getProfil()){
-//                $this->entityManager->persist($profilGlecteurVariable);
-//            }
-//        }
-//        $this->entityManager->flush();
+
 	}
 }

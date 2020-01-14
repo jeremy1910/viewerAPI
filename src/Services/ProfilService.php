@@ -18,10 +18,9 @@ class ProfilService extends ParserService
 
 	public function createInMemory(){
 		$records = $this->stmt->process($this->reader);
-
 		foreach ($records as $offset => $record) {
 			$profil = new Profil();
-			$profil->setInstallation($this->installation);
+//			$profil->setInstallation($this->installation);
 			$profil->setAppID($record['Numero']);
 			$profil->setNom($record['Nom']);
 			$profil->setDescription($record['Description']);

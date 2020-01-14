@@ -1,3 +1,0 @@
-TABLE=Visiteur
-Numero;DateEnregistrement;DateArrivee;DateRetour;Operateur;BadgeVisite;BadgeAffecte;Retour;Service;Nom;Prenom;Info1;Info2;Info3;Info4;Info5;Info6;Info7;Info8;Photo;Modele;Extension
-1;17/06/2009 16:22:30;17/06/2009 16:22:30;17/06/2009 16:27:05;1;0;0;True;1;ARD;LUI-MÊME;(Null);(Null);(Null);(Null);(Null);(Null);(Null);(Null);(Null);(Null);(Null)
