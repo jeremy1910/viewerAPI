@@ -44,6 +44,7 @@ class BadgeProfilService extends ParserService
 			/**
 			 * @var $profil Profil
 			 */
+
 			$profil = $this->entityManager->getRepository(Profil::class)->findOneBy(['appID' => $record['Profil'], 'installation' => $this->installation->getId()]);
 			if($profil === null){
 				$profil = key_exists($record['Profil'], self::$profils) ? self::$profils[$record['Profil']] : null;
@@ -52,7 +53,9 @@ class BadgeProfilService extends ParserService
 			if ($badge && $profil) {
 				unset(self::$badges2[$record['Badge']]);
 				unset(self::$profils2[$record['Profil']]);
+
 				$installation = $this->entityManager->find(\App\Entity\Installation::class, $this->installation->getId());
+
 				$profil->setInstallation($installation);
 				$badge->setInstallation($installation);
 				$badge->addProfil($profil);

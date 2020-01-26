@@ -23,6 +23,7 @@ class BadgeService extends ParserService
     public function createInMemory(){
 
 			$records = $this->stmt->process($this->reader);
+
 			foreach ($records as $offset => $record) {
 				$badge = new Badge();
 				$badge->setAppID($record['Numero']);

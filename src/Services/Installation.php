@@ -114,6 +114,7 @@ class Installation
 
 			//On ajoute l'installation à la base de données
 			$this->entityManager->persist($this->installation);
+			$this->entityManager->flush();
 			$this->loadInstallation();
 		} catch (\Exception $e) {
 			throw $e;
